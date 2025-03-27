@@ -1,0 +1,31 @@
+{
+  "name": "my-first-project",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "start-server": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@langchain/core": "^0.3.43",
+    "@langchain/google-genai": "^0.1.8",
+    "axios": "^1.7.9",
+    "child_process": "^1.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fs-extra": "^11.3.0",
+    "groq-sdk": "^0.16.0",
+    "helmet": "^8.0.0",
+    "langchain": "^0.3.19",
+    "mermaid": "^11.6.0",
+    "mongoose": "^8.10.0",
+    "nodemon": "^3.1.9",
+    "simple-git": "^3.27.0"
+  }
+}
