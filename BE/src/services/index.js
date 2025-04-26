@@ -1,7 +1,8 @@
 const RepoCloneService = require("./repoCloneService");
-const { generateDocumentation } = require("./documentationService");
+const { generateDocumentation,generateReadme } = require("./documentationService");
 
 module.exports = {
   RepoCloneService,
   generateDocumentation,
+  generateReadme
 };
