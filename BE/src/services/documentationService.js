@@ -242,6 +242,17 @@ Create a Mermaid diagram that shows:
 2. Data flow between components
 3. External dependencies and integrations
 4. Key services and their interactions
+5. do not include "style" word in the script
+6. do not include parenthesis or special keywords like "@" ,"#" ,"!" ,"&", "%", "*", "+ "that can cause syntax error .
+7. do not include such libraries from the project that include these symbols "@" ,"#" ,"!" ,"&", "%", "*", "+ ".
+8. do not include such files in the script that include "style" word
+9. do not include "end" keyword in the script
+10. Make sure you're not mixing Graphviz and Mermaid syntax.
+11. Apply style after defining the node in Mermaid.
+12.  Mermaid class diagram syntax, identifiers (like class names or variable names) must be alphanumeric and underscore-separated.
+13. No extra spaces between classDef and the class name 
+14. Attributes are comma-separated
+15. A semicolon (;) at the end is optional but recommended when multiple lines are involved
 
 Return only the Mermaid diagram code in this format:
 \`\`\`mermaid
@@ -300,8 +311,6 @@ const generateDocumentationStream = async (repoUrl, apiKey, sendEvent) => {
   const repoPath = await repoCloneService.cloneRepository(repoUrl);
   const files = await readRepositoryFiles(repoPath);
 
- 
-
   // Process files in batches
   const documentation = [];
   for (let i = 0; i < files.length; i += BATCH_SIZE) {
@@ -316,7 +325,7 @@ const generateDocumentationStream = async (repoUrl, apiKey, sendEvent) => {
   }
 
   // Generate README separately
- 
+
   try {
     const readmeResponse = await generateReadme(documentation, apiKey);
     sendEvent("readme", {
@@ -333,7 +342,7 @@ const generateDocumentationStream = async (repoUrl, apiKey, sendEvent) => {
   }
 
   // Generate architecture diagram separately
-  
+
   try {
     const architectureResponse = await generateArchitectureDiagram(
       documentation,
@@ -354,7 +363,6 @@ const generateDocumentationStream = async (repoUrl, apiKey, sendEvent) => {
 
   // Cleanup and complete
   await cleanupRepository(repoPath);
- 
 };
 
 module.exports = {
