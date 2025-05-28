@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
-
+import { HiX } from "react-icons/hi";
 const ReadmeViewer = ({ content, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
@@ -13,19 +13,8 @@ const ReadmeViewer = ({ content, onClose }) => {
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-400 hover:text-white"
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+           <HiX className="w-6 h-6" />
+            
           </button>
           <div className="p-8 h-full overflow-y-auto custom-scrollbar">
             <div className="prose prose-invert prose-pre:bg-gray-800 prose-pre:p-4 prose-pre:rounded-lg max-w-none">

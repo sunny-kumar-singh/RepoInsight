@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 
 import { jsPDF } from "jspdf";
-
 import ContentViewer from "../components/ContentViewer";
 
 export default function Home() {
@@ -45,9 +44,14 @@ export default function Home() {
   const consoleEndRef = useRef(null);
 
   useEffect(() => {
-    // Auto-scroll to the bottom of console output
+    // Smooth scroll with delay
     if (consoleEndRef.current) {
-      consoleEndRef.current.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        consoleEndRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }, 100); // Small delay for smoother experience
     }
   }, [consoleOutput]);
 
@@ -126,6 +130,11 @@ export default function Home() {
       return;
     }
 
+    // Store URL before clearing input
+    const submittedUrl = url;
+    // Clear the input immediately
+    setUrl("");
+
     try {
       setStreamingChunks([]);
       setConsoleOutput([]);
@@ -155,7 +164,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ repoUrl: url }),
+        body: JSON.stringify({ repoUrl: submittedUrl }),
       });
 
       if (!response.ok || !response.body) {
@@ -414,7 +423,6 @@ export default function Home() {
     // For file objects with documentation
     if (data.filePath && data.documentation) {
       const lines = data.documentation.split("\n");
-
       return (
         <div className="border-l-2 border-purple-500 pl-4 mb-4">
           <div className="font-bold text-xl text-purple-400 mb-2 animate-pulse">
@@ -425,7 +433,10 @@ export default function Home() {
               <div
                 key={`${data.filePath}-line-${idx}`}
                 className="animate-slideInRight"
-                style={{ animationDelay: `${idx * 40}ms` }}
+                style={{
+                  animationDelay: `${idx * 50}ms`,
+                  animationDuration: "0.3s",
+                }}
               >
                 {line.trim() === "" ? (
                   <span className="text-gray-500 text-opacity-30">↵</span>
@@ -447,7 +458,10 @@ export default function Home() {
             <div
               key={`array-item-${idx}`}
               className="animate-slideInRight"
-              style={{ animationDelay: `${idx * 100}ms` }}
+              style={{
+                animationDelay: `${idx * 80}ms`,
+                animationDuration: "0.3s",
+              }}
             >
               <span className="text-yellow-500 mr-2">{idx}:</span>
               <ConsoleObjectDisplay data={item} type={type} />
@@ -464,7 +478,10 @@ export default function Home() {
           <div
             key={`obj-${key}-${idx}`}
             className="mb-1 animate-slideInRight"
-            style={{ animationDelay: `${idx * 100}ms` }}
+            style={{
+              animationDelay: `${idx * 50}ms`,
+              animationDuration: "0.3s",
+            }}
           >
             <span className="text-yellow-500 mr-2">{key}:</span>
             {typeof value === "object" && value !== null ? (
@@ -556,22 +573,9 @@ export default function Home() {
           }
         }
 
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.5s ease-out forwards;
-        }
-
         .animate-slideInRight {
           opacity: 0;
-          animation: slideInRight 0.5s ease-out forwards;
+          animation: slideInRight 0.3s ease-out forwards;
         }
 
         .animate-pulse {

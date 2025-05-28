@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import mermaid from "mermaid";
+import { HiDownload, HiX } from "react-icons/hi";
 
 const MermaidDiagram = ({ content, onClose }) => {
   const mermaidRef = useRef(null);
+  console.log("Mermaid content:", content); // Debugging line
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -143,28 +145,44 @@ const MermaidDiagram = ({ content, onClose }) => {
     initializeMermaid();
   }, [content]);
 
+  const handleDownloadSVG = () => {
+    const svgElement = mermaidRef.current?.querySelector("svg");
+    if (!svgElement) return;
+
+    const svgData = new XMLSerializer().serializeToString(svgElement);
+    const svgBlob = new Blob([svgData], {
+      type: "image/svg+xml;charset=utf-8",
+    });
+    const downloadUrl = URL.createObjectURL(svgBlob);
+
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = "architecture-diagram.svg";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(downloadUrl);
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
       <div className="min-h-screen flex items-center justify-center p-2">
-        <div className="relative bg-gray-900 w-[95vw] h-[90vh] rounded-xl shadow-2xl">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-gray-400 hover:text-white"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+        <div className="relative bg-white w-[95vw] h-[90vh] rounded-xl shadow-2xl">
+          <div className="absolute top-4 right-4 flex items-center gap-3">
+            <button
+              onClick={handleDownloadSVG}
+              className="px-3 py-1.5 bg-gray-600 border-2 text-white rounded-full hover:bg-gray-900 hover:border-gray-200 transition-all flex items-center gap-2"
+              title="Download Diagram"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+              <HiDownload className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onClose}
+              className="text-gray-600 hover:text-black"
+            >
+              <HiX className="w-6 h-6" />
+            </button>
+          </div>
 
           <div className="p-8 h-full overflow-y-auto custom-scrollbar">
             {isLoading && (
@@ -173,7 +191,7 @@ const MermaidDiagram = ({ content, onClose }) => {
                 <p className="ml-3 text-gray-400">Rendering diagram...</p>
               </div>
             )}
-
+            {/* 
             {error && (
               <div className="bg-red-900 border-l-4 border-red-500 p-4 my-4 rounded">
                 <div className="flex items-start">
@@ -203,7 +221,7 @@ const MermaidDiagram = ({ content, onClose }) => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             <div
               ref={mermaidRef}
