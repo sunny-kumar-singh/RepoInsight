@@ -22,6 +22,11 @@ const createError = (message, status) => {
 const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
+// Home route
+app.get("/", (req, res) => {
+  res.json({ message: "App is running" });
+});
+
 // Routes
 app.use("/api", repoRoutes);
 

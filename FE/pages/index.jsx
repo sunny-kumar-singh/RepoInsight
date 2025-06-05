@@ -159,13 +159,16 @@ export default function Home() {
         },
       ]);
 
-      const response = await fetch("http://localhost:3001/api/repos/stream", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ repoUrl: submittedUrl }),
-      });
+      const response = await fetch(
+        "https://repo-insight-2fq4.vercel.app/api/repos/stream",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ repoUrl: submittedUrl }),
+        }
+      );
 
       if (!response.ok || !response.body) {
         throw new Error("Failed to connect to stream");
